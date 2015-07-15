@@ -6,6 +6,7 @@ Uses eastwood and kibit to analyze clojure code
 
 ### Prerequisites
 
+##### For linux system
 * Need to install [docker-sonar image](https://github.com/harbur/docker-sonarqube) and create a shared volume by adding the following onto the docker-compose.yml file under sonarqube. (See [example](https://github.com/zmsp/sonar-clojure/tree/master/Resources))
 
 ```  
@@ -17,6 +18,8 @@ volumes:
 * Need to have [Eastwood](https://github.com/jonase/eastwood) and [Kibit](https://github.com/jonase/kibit) added to the profiles.clj (locaed on .lein/) file as plugins.
 
 WARNING: If loading your code (particularly test files) causes side effects like writing files, opening connections to servers, modifying databases, etc., running this plugin on your code will do that too. 
+##### For Windows
+Wasn't tested on windows but plausible to run with little modification to source code. 
 
 ### 1. Get the plugin
 
