@@ -13,6 +13,7 @@ You will need to install [docker-sonar image](https://github.com/harbur/docker-s
 
 Need to have [Eastwood](https://github.com/jonase/eastwood) and [Kibit](https://github.com/jonase/kibit) added to the projects.clj file as plugins.
 
+WARNING: If loading your code (particularly test files) causes side effects like writing files, opening connections to servers, modifying databases, etc., running this plugin on your code will do that, too. 
 
 ### 1. Get the plugin
 
