@@ -1,6 +1,5 @@
-# InspectClojure Sonar plugin
-InspectClojure uses eastwood to analyze Clojure code. Project is still under construction.
-
+# sonar-clojure plugin
+Uses eastwood and kibit to analyze clojure code
 ### Contributors
 ######[Zobair Shahadat] (https://github.com/zmsp/)
 ######[Javier Hilty] (https://github.com/hiltyj/)
