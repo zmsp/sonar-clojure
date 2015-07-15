@@ -12,6 +12,7 @@ Uses eastwood and kibit to analyze clojure code
 volumes:
     - /opt/sonar/extensions:/opt/sonar/extensions
 ```
+* Need to install [sonar-runner] (http://docs.sonarqube.org/display/SONAR/Installing+and+Configuring+SonarQube+Runner) 
 
 * Need to have [Eastwood](https://github.com/jonase/eastwood) and [Kibit](https://github.com/jonase/kibit) added to the profiles.clj (locaed on .lein/) file as plugins.
 
@@ -30,15 +31,16 @@ WARNING: If loading your code (particularly test files) causes side effects like
 
 ### 2. Placing the jar file 
 
-Place the jar produced from above step, found on the target folder, onto `/opt/sonar/extensions/plugins`
+Place the jar produced from above step onto `/opt/sonar/extensions/plugins`
 
 ### 3. Run 
 Run docker-compose up from your [docker-sonar image](https://github.com/harbur/docker-sonarqube) folder
 
 ### 4. Using the plugin
 
-* Create a sonar-project.properties file and [Run](http://docs.sonarqube.org/display/SONAR/Analyzing+Source+Code) sonar-runner (See example folder for a sample)
+* Create a sonar-project.properties file
     * Add the line `sonar.import_unknown_files=true` see the [example](https://github.com/zmsp/sonar-clojure/tree/master/Resources)
+* [Run](http://docs.sonarqube.org/display/SONAR/Analyzing+Source+Code) sonar-runner. Make sure to have sonar server is running beforehand. 
 * Open Sonar `localhost:9000` on the browser 
 * Place Clojure widget to the dashboard
 * Optional: Place Size Metrics widget to the dashboard and resize the dashboard
