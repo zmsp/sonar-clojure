@@ -1,0 +1,10 @@
+== Eastwood 0.2.1 Clojure 1.6.0 JVM 1.8.0_45
+Directories scanned for source files:
+  env/dev/clj src/clj src/cljs test
+== Linting reg.handler ==
+== Linting reg.server ==
+== Linting reg.dev ==
+== Linting reg.core-test ==
+Entering directory `/home/shahadatm/Workspace/orion'
+test/reg/core_test.clj:91:5: constant-test: Test expression is always logical true or always logical false: (clojure.core/seq (clojure.core/list 1)) in form (if temp__4124__auto__ (clojure.core/let [more__35__auto__ temp__4124__auto__] (clojure.core/let [result__36__auto__ (clojure.core/apply clojure.core/= a__34__auto__ more__35__auto__)] (if result__36__auto__ (clojure.test/do-report {:type :pass, :expected a__34__auto__, :actual more__35__auto__, :message nil}) (clojure.test/do-report {:type :fail, :diffs (clojure.core/map clojure.core/vector more__35__auto__ (clojure.core/map (fn* [p1__33__37__auto__] (clojure.core/take 2 (clojure.data/diff a__34__auto__ p1__33__37__auto__))) more__35__auto__)), :expected a__34__auto__, :actual more__35__auto__, :message nil})) result__36__auto__)) (throw (java.lang.Exception. "= expects more than one argument")))
+== Warnings: 1 (not including reflection warnings)  Exceptions thrown: 0

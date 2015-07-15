@@ -1,0 +1,41 @@
+At /home/shahadatm/Workspace/ClojureQuality/qualityclj/src/clj/qualityclj/handler.clj:37:
+Consider using:
+  (wrap-defaults
+    (routes import-routes home-routes repo-routes app-routes)
+    config)
+instead of:
+  (-> (routes import-routes home-routes repo-routes app-routes)
+   (wrap-defaults config))
+
+At /home/shahadatm/Workspace/ClojureQuality/qualityclj/src/clj/qualityclj/imports/highlight.clj:13:
+Consider using:
+  (zero? (:exit result))
+instead of:
+  (= 0 (:exit result))
+
+At /home/shahadatm/Workspace/ClojureQuality/qualityclj/src/clj/qualityclj/imports/highlight.clj:45:
+Consider using:
+  (zero? (:exit result))
+instead of:
+  (= 0 (:exit result))
+
+At /home/shahadatm/Workspace/ClojureQuality/qualityclj/src/clj/qualityclj/models/db.clj:106:
+Consider using:
+  (seq
+    (q
+      '[:find ?file :in $ ?filepath :where [?file :file/path ?filepath]]
+      (db @conn)
+      filepath))
+instead of:
+  (not
+    (empty?
+      (q
+        '[:find
+          ?file
+          :in
+          $
+          ?filepath
+          :where
+          [?file :file/path ?filepath]]
+        (db @conn)
+        filepath)))

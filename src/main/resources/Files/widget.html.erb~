@@ -1,0 +1,11 @@
+<div class="dashbox">
+    <h3>Project name (as configured in the IDE):</h3>
+    <p>
+        <span class="big">
+            <%= format_measure('ide_prj_name') %>
+        </span>
+    </p>
+</div>
+<div>
+<img src="images.png">
+</div>
