@@ -6,12 +6,14 @@ Uses eastwood and kibit to analyze clojure code
 
 ### Prerequisites
 
-* Need to install [docker-sonar image](https://github.com/harbur/docker-sonarqube) and create a shared volume by adding the following onto the docker-compose.yml file under sonarqube. 
+* Need to install [docker-sonar image](https://github.com/harbur/docker-sonarqube) and create a shared volume by adding the following onto the docker-compose.yml file under sonarqube. (See [example](https://github.com/zmsp/sonar-clojure/tree/master/Resources))
 
-`  volumes:
-    - /opt/sonar/extensions:/opt/sonar/extensions`
+```  
+volumes:
+    - /opt/sonar/extensions:/opt/sonar/extensions
+```
 
-* Need to have [Eastwood](https://github.com/jonase/eastwood) and [Kibit](https://github.com/jonase/kibit) added to the projects.clj file as plugins.
+* Need to have [Eastwood](https://github.com/jonase/eastwood) and [Kibit](https://github.com/jonase/kibit) added to the profiles.clj (locaed on .lein/) file as plugins.
 
 WARNING: If loading your code (particularly test files) causes side effects like writing files, opening connections to servers, modifying databases, etc., running this plugin on your code will do that, too. 
 
@@ -36,7 +38,7 @@ Run docker-compose up from your [docker-sonar image](https://github.com/harbur/d
 ### 4. Using the plugin
 
 * Create a sonar-project.properties file and [Run](http://docs.sonarqube.org/display/SONAR/Analyzing+Source+Code) sonar-runner (See example folder for a sample)
-    * Add the line `sonar.import_unknown_files=true` see the [example](https://github.com/zmsp/sonar-clojure/tree/master/Example)
+    * Add the line `sonar.import_unknown_files=true` see the [example](https://github.com/zmsp/sonar-clojure/tree/master/Resources)
 * Open Sonar `localhost:9000` on the browser 
 * Place Clojure widget to the dashboard
 * Optional: Place Size Metrics widget to the dashboard and resize the dashboard
