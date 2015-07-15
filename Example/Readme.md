@@ -3,8 +3,8 @@ Need to have sonar.import_unknown_files=true in order to import clj and cljs fil
 
 
 Create a file called sonar-project.properties in the root directory of the clojure project.
-`
-# Required metadata
+
+`# Required metadata
 
 # Add an unique key
 sonar.projectKey=MyClojureProjectKey
