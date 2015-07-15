@@ -2,8 +2,8 @@
 InspectClojure uses eastwood to analyze Clojure code. Project is still under construction.
 
 ### Contributors
-[Zobair Shahadat] (https://github.com/zmsp/)
-[Javier Hilty] (https://github.com/hiltyj/)
+######[Zobair Shahadat] (https://github.com/zmsp/)
+######[Javier Hilty] (https://github.com/hiltyj/)
 
 ### Prerequisites
 
@@ -18,7 +18,7 @@ Need to have [Eastwood](https://github.com/jonase/eastwood) and [Kibit](https://
 ### 1. Get the plugin
 
 #### Download the jar
-[Download](HTTP://example.com)
+[Download](https://raw.githubusercontent.com/zmsp/sonar-clojure/master/Jar/clojure.sonar-1.0-SNAPSHOT.jar)
 
 #### Compiling from Source
 * Clone this project
