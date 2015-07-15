@@ -36,7 +36,7 @@ Run docker-compose up from your [docker-sonar image](https://github.com/harbur/d
 ### 4. Using the plugin
 
 * Create a sonar-project.properties file and [Run](http://docs.sonarqube.org/display/SONAR/Analyzing+Source+Code) sonar-runner (See example folder for a sample)
-    * Add the line `sonar.import_unknown_files=true` see the [example](tree/master/Example/)
+    * Add the line `sonar.import_unknown_files=true` see the [example](https://github.com/zmsp/sonar-clojure/tree/master/Example)
 * Open Sonar `localhost:9000` on the browser 
 * Place Clojure widget to the dashboard
 * Optional: Place Size Metrics widget to the dashboard and resize the dashboard
