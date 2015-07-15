@@ -27,7 +27,7 @@ sonarqube:
     - "443"
 ```
 
-## Sonar Project Properties example
+## sonar-project-properties
 Need to have sonar.import_unknown_files=true in order to import clj and cljs files
 
 
@@ -53,3 +53,29 @@ sonar.import_unknown_files=true
 sonar.sourceEncoding=UTF-8
 ```
 
+## sonar-runner configuration sonar-runner.properties
+Localed in sonar-runner directory. Credentials are specific to harbor/docker-sonarqube
+
+```
+sonar.jdbc.url=jdbc:postgresql://localhost:5432/sonar
+
+sonar.jdbc.username=sonar
+sonar.jdbc.password=xaexohquaetiesoo
+
+```
+
+## Leiningen profiles.clj 
+ located on home/.lein/profiles.clj
+ Include eastwood and kibit in plugins
+```
+{
+ :user {
+        :plugins [
+                  [jonase/eastwood "0.2.1"]
+                  [lein-kibit "0.1.2"]
+                  ]
+
+        }
+ }
+
+```
