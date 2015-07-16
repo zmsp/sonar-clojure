@@ -1,7 +1,7 @@
 {
  :user {
         :plugins [
-                  [lein-bikeshed "0.2.0"]
+                  [jonase/eastwood "0.2.1"]
                   [lein-kibit "0.1.2"]
                   ]
 
