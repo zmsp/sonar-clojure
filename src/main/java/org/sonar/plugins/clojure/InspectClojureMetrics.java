@@ -56,7 +56,7 @@ public class InspectClojureMetrics implements Metrics {
     //Holds scanned file local URL. Isn't being used in widget
     public static final Metric FILES =
             new Metric.Builder(
-                    "html-file-link", // metric identifier
+                    "html-filnumix-link", // metric identifier
                     "HTML Files", // metric name
                     Metric.ValueType.DATA) // metric data type
                     .setDescription("Link to qualityclj files")

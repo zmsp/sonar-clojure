@@ -175,7 +175,7 @@ public class InspectClojureSensor implements Sensor {
                 count++;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(System.out);
         }
 
     }
@@ -183,7 +183,7 @@ public class InspectClojureSensor implements Sensor {
     //==========================================================
     // Description: Finds CLJ and CLJS file and store properties
     // Input: Base directory
-    // Output: None
+    // Output: List of files
     //==========================================================
     public List<File> findCLJFile(String directory) {
         List<File> filesList = null;
@@ -197,6 +197,7 @@ public class InspectClojureSensor implements Sensor {
 
         } catch (Exception e) {
             System.out.println("▂▃▅▇█▓▒░۩۞۩ FND FILE: EXCEPTION ۩۞۩░▒▓█▇▅▃▂");
+            e.printStackTrace(System.out);
         }
         return filesList;
 
@@ -236,9 +237,12 @@ public class InspectClojureSensor implements Sensor {
 
         } catch (IOException e) {
             System.out.println("▂▃▅▇█▓▒░۩۞۩ EASTWOOD IO EXCEPTION ۩۞۩░▒▓█▇▅▃▂");
+            e.printStackTrace(System.out);
 
         } catch (Exception e) {
             System.out.println("▂▃▅▇█▓▒░۩۞۩ EASTWOOD EXCEPTION ۩۞۩░▒▓█▇▅▃▂");
+            e.printStackTrace(System.out);
+
         }
     }
 
