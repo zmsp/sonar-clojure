@@ -2,6 +2,9 @@ package org.sonar.plugins.clojure; /**
  * Created by shahadatm on 6/2/15.
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.apache.commons.io.FileUtils;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
@@ -26,6 +29,7 @@ public class InspectClojureSensor implements Sensor {
     private boolean eastwoodLint = true;
     private boolean kibitLint = true;
 
+    private static final Log LOG = LogFactory.getLog(InspectClojureSensor.class);
 
     //Properties containing error info
     private PropertiesBuilder<String, Integer> files = new PropertiesBuilder<String, Integer>();
@@ -39,13 +43,10 @@ public class InspectClojureSensor implements Sensor {
 
     //IDK
     private FileSystem fileSystem;
-    private Settings settings;
-
 
     //Constructor for sensor
     public InspectClojureSensor(Settings settings, FileSystem fileSystem) {
         this.fileSystem = fileSystem;
-        this.settings = settings;
     }
 
     //==========================================================
@@ -74,10 +75,10 @@ public class InspectClojureSensor implements Sensor {
             in.close();
 
         } catch (IOException e) {
-            System.out.println("▂▃▅▇█▓▒░۩۞۩ EASTWOOD IO EXCEPTION ۩۞۩░▒▓█▇▅▃▂");
+            LOG.error("▂▃▅▇█▓▒░۩۞۩ EASTWOOD IO EXCEPTION ۩۞۩░▒▓█▇▅▃▂", e);
 
         } catch (Exception e) {
-            System.out.println("▂▃▅▇█▓▒░۩۞۩ EASTWOOD EXCEPTION ۩۞۩░▒▓█▇▅▃▂");
+            LOG.error("▂▃▅▇█▓▒░۩۞۩ EASTWOOD EXCEPTION ۩۞۩░▒▓█▇▅▃▂", e);
         }
         return result;
     }
@@ -130,7 +131,7 @@ public class InspectClojureSensor implements Sensor {
     private void buildKibitLintProperties(String baseDirectory) {
         String kibitOutput = runCMD(baseDirectory, "lein kibit");
         String[] kibitOutputSplit = kibitOutput.split("At");
-        Pattern MY_PATTERN = Pattern.compile(":\\d+:");
+        final Pattern MY_PATTERN = Pattern.compile(":\\d+:");
         for (String o : kibitOutputSplit) {
             String[] kibitOutputSplitByPattern = o.split(MY_PATTERN.toString());
             if (kibitOutputSplitByPattern.length > 1) {
@@ -196,8 +197,7 @@ public class InspectClojureSensor implements Sensor {
             filesList = (List<File>) FileUtils.listFiles(dir, extensions, true);
 
         } catch (Exception e) {
-            System.out.println("▂▃▅▇█▓▒░۩۞۩ FND FILE: EXCEPTION ۩۞۩░▒▓█▇▅▃▂");
-            e.printStackTrace(System.out);
+            LOG.error("▂▃▅▇█▓▒░۩۞۩ FIND FILE: EXCEPTION ۩۞۩░▒▓█▇▅▃▂", e);
         }
         return filesList;
 
@@ -236,21 +236,18 @@ public class InspectClojureSensor implements Sensor {
 
 
         } catch (IOException e) {
-            System.out.println("▂▃▅▇█▓▒░۩۞۩ EASTWOOD IO EXCEPTION ۩۞۩░▒▓█▇▅▃▂");
-            e.printStackTrace(System.out);
-
+            LOG.error("▂▃▅▇█▓▒░۩۞۩ EASTWOOD IO EXCEPTION ۩۞۩░▒▓█▇▅▃▂", e);
         } catch (Exception e) {
-            System.out.println("▂▃▅▇█▓▒░۩۞۩ EASTWOOD EXCEPTION ۩۞۩░▒▓█▇▅▃▂");
-            e.printStackTrace(System.out);
+            LOG.error("▂▃▅▇█▓▒░۩۞۩ EASTWOOD EXCEPTION ۩۞۩░▒▓█▇▅▃▂", e);
 
         }
     }
 
-    //TODO find a way to execute only on clojure project
-    //Tells weather the plugin should execute
     public boolean shouldExecuteOnProject(Project project) {
-        return true;
-        //return project.getLanguageKey().equals("clojure");
+       String baseDirectory = fileSystem.baseDir().toString();
+       List<File> fileList = findCLJFile(baseDirectory);
+    
+       return fileList.isEmpty();
     }
 
     @Override
