@@ -52,8 +52,8 @@
                 <configuration>
                     <pluginKey>InspectClojure</pluginKey>
                     <pluginClass>org.sonar.plugins.clojure.InspectClojure</pluginClass>
-                    <pluginName>Sonar-Clojure-Plugin</pluginName>
-                    <pluginDescription>Scans clojure code using Kibit and Eastwood</pluginDescription>
+                    <pluginName>Clojure</pluginName>
+                    <pluginDescription>Analyzes Clojure code using eastwood and kibit.</pluginDescription>
                 </configuration>
             </plugin>
         </plugins>

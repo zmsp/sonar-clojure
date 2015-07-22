@@ -2,10 +2,9 @@ package org.sonar.plugins.clojure; /**
  * Created by shahadatm on 6/2/15.
  */
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.apache.commons.io.FileUtils;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.FileSystem;
@@ -24,13 +23,11 @@ import java.util.regex.Pattern;
 //Sensor must implement Sensor class
 public class InspectClojureSensor implements Sensor {
 
+    private static final Log LOG = LogFactory.getLog(InspectClojureSensor.class);
     //Turn on or off the following
     private boolean fileFinder = true;
     private boolean eastwoodLint = true;
     private boolean kibitLint = true;
-
-    private static final Log LOG = LogFactory.getLog(InspectClojureSensor.class);
-
     //Properties containing error info
     private PropertiesBuilder<String, Integer> files = new PropertiesBuilder<String, Integer>();
     private PropertiesBuilder<Integer, String> filePath = new PropertiesBuilder<Integer, String>();
@@ -75,10 +72,14 @@ public class InspectClojureSensor implements Sensor {
             in.close();
 
         } catch (IOException e) {
-            LOG.error("▂▃▅▇█▓▒░۩۞۩ EASTWOOD IO EXCEPTION ۩۞۩░▒▓█▇▅▃▂", e);
+            LOG.error("▂▃▅▇█▓▒░Parsing exception░▒▓█▇▅▃▂", e);
+            System.out.println("▂▃▅▇█▓▒░Parsing exception░▒▓█▇▅▃▂");
+            e.printStackTrace(System.out);
 
         } catch (Exception e) {
-            LOG.error("▂▃▅▇█▓▒░۩۞۩ EASTWOOD EXCEPTION ۩۞۩░▒▓█▇▅▃▂", e);
+            LOG.error("▂▃▅▇█▓▒░Parsing exception░▒▓█▇▅▃▂", e);
+            System.out.println("▂▃▅▇█▓▒░Parsing exception░▒▓█▇▅▃▂");
+            e.printStackTrace(System.out);
         }
         return result;
     }
@@ -91,25 +92,25 @@ public class InspectClojureSensor implements Sensor {
 
     public void analyse(Project project, SensorContext sensorContext) {
         String baseDirectory = fileSystem.baseDir().toString();
-
+        System.out.println("Clojure project detected, running sonar-clojure");
         if (fileFinder) {
-            System.out.println("●▬▬▬▬๑۩۩๑▬▬▬▬▬● Running file finder ●▬▬▬▬๑۩۩๑▬▬▬▬▬●");
+            System.out.println("●▬▬▬▬▬▬▬▬▬● Running file finder ●▬▬▬▬▬▬▬▬▬●");
             buildFileProperties(baseDirectory);
         }
 
         if (eastwoodLint) {
-            System.out.println("●▬▬▬▬๑۩۩๑▬▬▬▬▬● Running Eastwood ●▬▬▬▬๑۩۩๑▬▬▬▬▬●");
+            System.out.println("●▬▬▬▬▬▬▬▬▬● Running Eastwood ●▬▬▬▬▬▬▬▬▬●");
             buildEastwoodLintProperties(baseDirectory);
         }
 
         if (kibitLint) {
-            System.out.println("●▬▬▬▬๑۩۩๑▬▬▬▬▬● Running Kibit ●▬▬▬▬๑۩۩๑▬▬▬▬▬●");
+            System.out.println("●▬▬▬▬▬▬▬▬▬● Running Kibit ●▬▬▬▬▬▬▬▬▬●");
             buildKibitLintProperties(baseDirectory);
 
         }
 
 
-        System.out.println("●▬▬▬▬๑۩۩๑▬▬▬▬▬● Saving measures ●▬▬▬▬๑۩۩๑▬▬▬▬▬●");
+        System.out.println("●▬▬▬▬▬▬▬▬▬● Saving measures ●▬▬▬▬▬▬▬▬▬●");
 
 
         sensorContext.saveMeasure(new Measure(InspectClojureMetrics.ISSUES_COUNT, (double) totalIssues));
@@ -118,7 +119,6 @@ public class InspectClojureSensor implements Sensor {
         sensorContext.saveMeasure(new Measure(InspectClojureMetrics.ISSUES_FILE, filePath.buildData()));
 
         sensorContext.saveMeasure(new Measure(InspectClojureMetrics.FILES, files.buildData()));
-
 
 
     }
@@ -147,12 +147,14 @@ public class InspectClojureSensor implements Sensor {
 
                 if (lineNum != null && error != null && file != null) {
 
+                    //Add parallel properties builder
+
                     filePath.add(totalIssues, file);
                     fileLine.add(totalIssues, lineNum);
                     fileError.add(totalIssues, error);
                     totalIssues++;
                 }
-                System.out.println("Debug:____" + lineNum + "_____" + file + "______" + error);
+
             }
 
         }
@@ -176,6 +178,7 @@ public class InspectClojureSensor implements Sensor {
                 count++;
             }
         } catch (Exception e) {
+            System.out.println("▂▃▅▇█▓▒░Building file properties error░▒▓█▇▅▃▂");
             e.printStackTrace(System.out);
         }
 
@@ -197,7 +200,9 @@ public class InspectClojureSensor implements Sensor {
             filesList = (List<File>) FileUtils.listFiles(dir, extensions, true);
 
         } catch (Exception e) {
-            LOG.error("▂▃▅▇█▓▒░۩۞۩ FIND FILE: EXCEPTION ۩۞۩░▒▓█▇▅▃▂", e);
+            LOG.error("▂▃▅▇█▓▒░ FIND FILE: EXCEPTION  ░▒▓█▇▅▃▂", e);
+            System.out.println("▂▃▅▇█▓▒░Find Files Exception░▒▓█▇▅▃▂");
+            e.printStackTrace(System.out);
         }
         return filesList;
 
@@ -236,18 +241,35 @@ public class InspectClojureSensor implements Sensor {
 
 
         } catch (IOException e) {
-            LOG.error("▂▃▅▇█▓▒░۩۞۩ EASTWOOD IO EXCEPTION ۩۞۩░▒▓█▇▅▃▂", e);
+            LOG.error("▂▃▅▇█▓▒░ EASTWOOD IO EXCEPTION  ░▒▓█▇▅▃▂", e);
+            System.out.println("▂▃▅▇█▓▒░Eastwood parsing error░▒▓█▇▅▃▂");
+            e.printStackTrace(System.out);
         } catch (Exception e) {
-            LOG.error("▂▃▅▇█▓▒░۩۞۩ EASTWOOD EXCEPTION ۩۞۩░▒▓█▇▅▃▂", e);
+            LOG.error("▂▃▅▇█▓▒░ EASTWOOD EXCEPTION  ░▒▓█▇▅▃▂", e);
+            System.out.println("▂▃▅▇█▓▒░Eastwood parsing error░▒▓█▇▅▃▂");
+            e.printStackTrace(System.out);
 
         }
     }
 
+
+    //TODO write a method to check if it should execute on project
+    /* public Boolean checkShouldExecuteOnProject() {
+
+         String baseDirectory = fileSystem.baseDir().toString();
+
+        FileSystem fs = fileSystem;
+
+        fs.hasFiles(fs.predicates().hasLanguage("clj"));
+        return !findCLJFile(baseDirectory).isEmpty();
+
+
+
+    }*/
     public boolean shouldExecuteOnProject(Project project) {
-       String baseDirectory = fileSystem.baseDir().toString();
-       List<File> fileList = findCLJFile(baseDirectory);
-    
-       return fileList.isEmpty();
+        File f = new File(fileSystem.baseDir().toString() + "/project.clj");
+
+        return f.exists() && !f.isDirectory();
     }
 
     @Override

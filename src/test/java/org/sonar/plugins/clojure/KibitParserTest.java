@@ -72,8 +72,6 @@ public class KibitParserTest {
                 file = line[0];
                 error = line[1];
 
-                System.out.println("____" + lineNum + "_____" + file + "______" + error);
-
             }
 
 

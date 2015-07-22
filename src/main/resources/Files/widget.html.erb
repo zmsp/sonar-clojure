@@ -1,7 +1,9 @@
 <div class="dashbox">
    <h1>Clojure Project Dashboard</h1>
-   <h3>Project name: <%= @project.name %></h3>
+   <h4>Project name: <%= @project.name %></h4>
    <%
+   if (measure('clojure-issues-line'))
+
       issues_file = measure('clojure-issues-file')
       issues_line = measure('clojure-issues-line')
       issues_error = measure('clojure-issues-error')
@@ -39,4 +41,9 @@
          end
          %>
    </table>
+   <% else %>
+   <h2>Can't display results. No clojure issue found.</h2>
+   <%
+   end
+   %>
 </div>

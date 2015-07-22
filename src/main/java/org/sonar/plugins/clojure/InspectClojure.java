@@ -9,7 +9,7 @@ import java.util.List;
  * Created by shahadatm on 6/2/15.
  */
 public class InspectClojure extends SonarPlugin {
-    public static final String MY_PROPERTY = "sonar.example.myproperty";
+
 
     public List getExtensions() {
         return Arrays.asList(
