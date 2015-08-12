@@ -4,8 +4,10 @@ Uses eastwood and kibit to analyze clojure code
 ######[Zobair Shahadat] (https://github.com/zmsp/)
 ######[Javier Hilty] (https://github.com/hiltyj/)
 
-### Prerequisites
+### Sample Output
 
+### Prerequisites
+![alt tag](http://i.imgur.com/93m98zR.png)
 ##### For linux system
 * Need to install [docker-sonar image](https://github.com/harbur/docker-sonarqube) and create a shared volume by adding the following onto the docker-compose.yml file under sonarqube. (See [example](https://github.com/zmsp/sonar-clojure/tree/master/Resources))
 

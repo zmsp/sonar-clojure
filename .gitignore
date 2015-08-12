@@ -6,6 +6,7 @@ target/
 *.iml
 *.ipr
 .idea/
+*~
 
 # ---- Eclipse
 .classpath
