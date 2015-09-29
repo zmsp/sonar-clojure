@@ -50,3 +50,5 @@ Run docker-compose up from your [docker-sonar image](https://github.com/harbur/d
 * Place Clojure widget to the dashboard
 * Optional: Place Size Metrics widget and resize the dashboard
 
+# Thanks
+I am activly monitoring this repo. If you would like to contribute, or submit an issue feel free to do so. 
