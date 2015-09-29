@@ -1,4 +1,4 @@
-# sonar-clojure plugin
+# sonar-clojure plugins
 Uses eastwood and kibit to analyze clojure code
 ### Contributors
 ######[Zobair Shahadat] (https://github.com/zmsp/)
@@ -51,4 +51,4 @@ Run docker-compose up from your [docker-sonar image](https://github.com/harbur/d
 * Optional: Place Size Metrics widget and resize the dashboard
 
 # Thanks
-I am activly monitoring this repo. If you would like to contribute, or submit an issue feel free to do so. 
+## I am actively monitoring this repo. If you would like to contribute, or submit an issue feel free to do so. 
