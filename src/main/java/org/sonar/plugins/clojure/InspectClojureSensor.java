@@ -129,6 +129,9 @@ public class InspectClojureSensor implements Sensor {
     // Output: None
     //==========================================================
     private void buildKibitLintProperties(String baseDirectory) {
+
+        try {
+
         String kibitOutput = runCMD(baseDirectory, "lein kibit");
         String[] kibitOutputSplit = kibitOutput.split("At");
         final Pattern MY_PATTERN = Pattern.compile(":\\d+:");
@@ -158,6 +161,18 @@ public class InspectClojureSensor implements Sensor {
             }
 
         }
+
+
+    } catch (NullPointerException e) {
+        LOG.error("▂▃▅▇█▓▒░ KIBIT IO EXCEPTION  ░▒▓█▇▅▃▂", e);
+        System.out.println("▂▃▅▇█▓▒░KIBIT No error found░▒▓█▇▅▃▂");
+        e.printStackTrace(System.out);
+    } catch (Exception e) {
+        LOG.error("▂▃▅▇█▓▒░ KIBIT EXCEPTION  ░▒▓█▇▅▃▂", e);
+        System.out.println("▂▃▅▇█▓▒░KIBIT parsing error░▒▓█▇▅▃▂");
+        e.printStackTrace(System.out);
+
+    }
     }
 
     //==========================================================
