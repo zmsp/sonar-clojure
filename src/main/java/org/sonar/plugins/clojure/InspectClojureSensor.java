@@ -1,10 +1,6 @@
-package org.sonar.plugins.clojure; /**
- * Created by shahadatm on 6/2/15.
- */
+package org.sonar.plugins.clojure;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.FileSystem;
@@ -23,7 +19,7 @@ import java.util.regex.Pattern;
 //Sensor must implement Sensor class
 public class InspectClojureSensor implements Sensor {
 
-    private static final Log LOG = LogFactory.getLog(InspectClojureSensor.class);
+    private static final Logger LOG = Logger.getInstance();
     //Turn on or off the following
     private boolean fileFinder = true;
     private boolean eastwoodLint = true;
@@ -46,40 +42,34 @@ public class InspectClojureSensor implements Sensor {
         this.fileSystem = fileSystem;
     }
 
-    //==========================================================
-    // Description: Runs bash cmd given cmd and directory
-    // Input: Directory and CMD
-    // Output: Shell output string
-    //==========================================================
+    /**
+     * Runs bash cmd given cmd and directory
+     *
+     * @param dir     Directory
+     * @param leinCmd bash cmd
+     * @return Shell output string
+     */
     private static String runCMD(String dir, String leinCmd) {
 
         String cmdStr = "cd " + dir + "\n" + leinCmd;
-
         String[] cmd = {"/bin/sh", "-c", cmdStr};
-
         String result = null;
         try {
-
             Process p = Runtime.getRuntime().exec(cmd);
-
             BufferedReader in =
                     new BufferedReader(new InputStreamReader(p.getInputStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                System.out.println(inputLine);
+                LOG.info(inputLine);
                 result += inputLine + "\n";
             }
             in.close();
 
         } catch (IOException e) {
             LOG.error("▂▃▅▇█▓▒░Parsing exception░▒▓█▇▅▃▂", e);
-            System.out.println("▂▃▅▇█▓▒░Parsing exception░▒▓█▇▅▃▂");
-            e.printStackTrace(System.out);
 
         } catch (Exception e) {
             LOG.error("▂▃▅▇█▓▒░Parsing exception░▒▓█▇▅▃▂", e);
-            System.out.println("▂▃▅▇█▓▒░Parsing exception░▒▓█▇▅▃▂");
-            e.printStackTrace(System.out);
         }
         return result;
     }
@@ -92,25 +82,25 @@ public class InspectClojureSensor implements Sensor {
 
     public void analyse(Project project, SensorContext sensorContext) {
         String baseDirectory = fileSystem.baseDir().toString();
-        System.out.println("Clojure project detected, running sonar-clojure");
+        LOG.info("Clojure project detected, running sonar-clojure");
         if (fileFinder) {
-            System.out.println("●▬▬▬▬▬▬▬▬▬● Running file finder ●▬▬▬▬▬▬▬▬▬●");
+            LOG.info("●▬▬▬▬▬▬▬▬▬● Running file finder ●▬▬▬▬▬▬▬▬▬●");
             buildFileProperties(baseDirectory);
         }
 
         if (eastwoodLint) {
-            System.out.println("●▬▬▬▬▬▬▬▬▬● Running Eastwood ●▬▬▬▬▬▬▬▬▬●");
+            LOG.info("●▬▬▬▬▬▬▬▬▬● Running Eastwood ●▬▬▬▬▬▬▬▬▬●");
             buildEastwoodLintProperties(baseDirectory);
         }
 
         if (kibitLint) {
-            System.out.println("●▬▬▬▬▬▬▬▬▬● Running Kibit ●▬▬▬▬▬▬▬▬▬●");
+            LOG.info("●▬▬▬▬▬▬▬▬▬● Running Kibit ●▬▬▬▬▬▬▬▬▬●");
             buildKibitLintProperties(baseDirectory);
 
         }
 
 
-        System.out.println("●▬▬▬▬▬▬▬▬▬● Saving measures ●▬▬▬▬▬▬▬▬▬●");
+        LOG.info("●▬▬▬▬▬▬▬▬▬● Saving measures ●▬▬▬▬▬▬▬▬▬●");
 
 
         sensorContext.saveMeasure(new Measure(InspectClojureMetrics.ISSUES_COUNT, (double) totalIssues));
@@ -132,102 +122,93 @@ public class InspectClojureSensor implements Sensor {
 
         try {
 
-        String kibitOutput = runCMD(baseDirectory, "lein kibit");
-        String[] kibitOutputSplit = kibitOutput.split("At");
-        final Pattern MY_PATTERN = Pattern.compile(":\\d+:");
-        for (String o : kibitOutputSplit) {
-            String[] kibitOutputSplitByPattern = o.split(MY_PATTERN.toString());
-            if (kibitOutputSplitByPattern.length > 1) {
-                String lineNum = null;
-                String error = null;
-                String file = null;
-                Matcher m = MY_PATTERN.matcher(o);
-                while (m.find()) {
-                    lineNum = m.group(0).replace(":", "");
-                }
-                file = kibitOutputSplitByPattern[0].replace(baseDirectory, "");
-                error = kibitOutputSplitByPattern[1];
+            String kibitOutput = runCMD(baseDirectory, "lein kibit");
+            if (!kibitOutput.contains("At")) {
+                LOG.info("No error found from kibit analysis");
+                return;
+            }
+            String[] kibitOutputSplit = kibitOutput.split("At");
+            final Pattern MY_PATTERN = Pattern.compile(":\\d+:");
+            for (String o : kibitOutputSplit) {
+                String[] kibitOutputSplitByPattern = o.split(MY_PATTERN.toString());
+                if (kibitOutputSplitByPattern.length > 1) {
+                    String lineNum = null;
+                    String error = null;
+                    String file = null;
+                    Matcher m = MY_PATTERN.matcher(o);
+                    while (m.find()) {
+                        lineNum = m.group(0).replace(":", "");
+                    }
+                    file = kibitOutputSplitByPattern[0].replace(baseDirectory, "");
+                    error = kibitOutputSplitByPattern[1];
 
-                if (lineNum != null && error != null && file != null) {
+                    if (lineNum != null && error != null && file != null) {
 
-                    //Add parallel properties builder
+                        //Add parallel properties builder
 
-                    filePath.add(totalIssues, file);
-                    fileLine.add(totalIssues, lineNum);
-                    fileError.add(totalIssues, error);
-                    totalIssues++;
+                        filePath.add(totalIssues, file);
+                        fileLine.add(totalIssues, lineNum);
+                        fileError.add(totalIssues, error);
+                        totalIssues++;
+                    }
+
                 }
 
             }
 
+
+        } catch (NullPointerException e) {
+            LOG.error("▂▃▅▇█▓▒░ KIBIT IO EXCEPTION  ░▒▓█▇▅▃▂", e);
+        } catch (Exception e) {
+            LOG.error("▂▃▅▇█▓▒░ KIBIT EXCEPTION  ░▒▓█▇▅▃▂", e);
+
         }
-
-
-    } catch (NullPointerException e) {
-        LOG.error("▂▃▅▇█▓▒░ KIBIT IO EXCEPTION  ░▒▓█▇▅▃▂", e);
-        System.out.println("▂▃▅▇█▓▒░KIBIT No error found░▒▓█▇▅▃▂");
-        e.printStackTrace(System.out);
-    } catch (Exception e) {
-        LOG.error("▂▃▅▇█▓▒░ KIBIT EXCEPTION  ░▒▓█▇▅▃▂", e);
-        System.out.println("▂▃▅▇█▓▒░KIBIT parsing error░▒▓█▇▅▃▂");
-        e.printStackTrace(System.out);
-
-    }
     }
 
-    //==========================================================
-    // Description: Finds CLJ and CLJS file and store properties
-    // Input: Base directory
-    // Output: None
-    //==========================================================
+    /**
+     * Finds CLJ and CLJS file and store properties
+     *
+     * @param baseDirectory Base directory
+     */
     public void buildFileProperties(String baseDirectory) {
 
         try {
-            int count = 1;
-            for (File file : findCLJFile(baseDirectory + "/src/")) {
-                files.add("file://" + file.getCanonicalPath(), count);
-                count++;
-            }
-            for (File file : findCLJFile(baseDirectory + "/test/")) {
-                files.add("file://" + file.getCanonicalPath(), count);
-                count++;
+            int fileNum = 1;
+            for (File file : findCLJFile(baseDirectory)) {
+                files.add("file://" + file.getCanonicalPath(), fileNum);
+                fileNum++;
             }
         } catch (Exception e) {
-            System.out.println("▂▃▅▇█▓▒░Building file properties error░▒▓█▇▅▃▂");
-            e.printStackTrace(System.out);
+            LOG.error("▂▃▅▇█▓▒░Building file properties error░▒▓█▇▅▃▂", e);
         }
 
     }
 
-    //==========================================================
-    // Description: Finds CLJ and CLJS file and store properties
-    // Input: Base directory
-    // Output: List of files
-    //==========================================================
+    /**
+     * Description: Finds CLJ and CLJS file and store properties
+     *
+     * @param directory base directory
+     * @return list of clj and cljs files
+     */
     public List<File> findCLJFile(String directory) {
         List<File> filesList = null;
         try {
             //Get qualityclj files.
             File dir = new File(directory);
             String[] extensions = new String[]{"clj", "cljs"};
-
-
             filesList = (List<File>) FileUtils.listFiles(dir, extensions, true);
 
         } catch (Exception e) {
             LOG.error("▂▃▅▇█▓▒░ FIND FILE: EXCEPTION  ░▒▓█▇▅▃▂", e);
-            System.out.println("▂▃▅▇█▓▒░Find Files Exception░▒▓█▇▅▃▂");
-            e.printStackTrace(System.out);
         }
         return filesList;
 
     }
 
-    //==========================================================
-    // Description: Parse eastwood output
-    // Input: Base directory
-    // Output: None
-    //==========================================================
+    /**
+     * Description: Run and parse eastwood output
+     * @param baseDirectory Base directory
+     */
     private void buildEastwoodLintProperties(String baseDirectory) {
 
         String output = "";
@@ -246,23 +227,15 @@ public class InspectClojureSensor implements Sensor {
             }
             for (String temp : lines) {
                 String[] tokens = temp.split(":");
-
                 filePath.add(totalIssues, tokens[0]);
                 fileLine.add(totalIssues, tokens[1]);
                 fileError.add(totalIssues, temp);
                 totalIssues++;
-
             }
-
-
         } catch (IOException e) {
             LOG.error("▂▃▅▇█▓▒░ EASTWOOD IO EXCEPTION  ░▒▓█▇▅▃▂", e);
-            System.out.println("▂▃▅▇█▓▒░Eastwood parsing error░▒▓█▇▅▃▂");
-            e.printStackTrace(System.out);
         } catch (Exception e) {
             LOG.error("▂▃▅▇█▓▒░ EASTWOOD EXCEPTION  ░▒▓█▇▅▃▂", e);
-            System.out.println("▂▃▅▇█▓▒░Eastwood parsing error░▒▓█▇▅▃▂");
-            e.printStackTrace(System.out);
 
         }
     }
@@ -277,14 +250,16 @@ public class InspectClojureSensor implements Sensor {
 
         fs.hasFiles(fs.predicates().hasLanguage("clj"));
         return !findCLJFile(baseDirectory).isEmpty();
-
-
-
     }*/
     public boolean shouldExecuteOnProject(Project project) {
         File f = new File(fileSystem.baseDir().toString() + "/project.clj");
-
-        return f.exists() && !f.isDirectory();
+        boolean execute = f.exists() && !f.isDirectory();
+        if (execute) {
+            return true;
+        } else {
+            LOG.info(f.getPath().toString() + " Does not exist. Skipped running InspectClojure");
+            return false;
+        }
     }
 
     @Override

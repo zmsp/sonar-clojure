@@ -69,13 +69,12 @@ sonar.jdbc.password=xaexohquaetiesoo
  Include eastwood and kibit in plugins
 ```
 {
- :user {
+    :user {
         :plugins [
-                  [jonase/eastwood "0.2.1"]
-                  [lein-kibit "0.1.2"]
-                  ]
-
-        }
- }
+            [jonase/eastwood "0.2.1"]
+            [lein-kibit "0.1.5"]
+        ]
+    }
+}
 
 ```

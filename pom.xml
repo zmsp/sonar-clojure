@@ -3,17 +3,23 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>org.sonar.plugins.clojure</groupId>
     <artifactId>clojure.sonar</artifactId>
     <packaging>sonar-plugin</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
     <name>Sonar-Clojure-Plugin</name>
     <description>Scans clojure code using Kibit and Eastwood</description>
+    <url>https://github.com/zmsp/sonar-clojure</url>
     <organization>
         <name>Pragmatics</name>
         <url>http://www.pragmatics.com</url>
     </organization>
+    <developers>
+        <developer>
+            <id>zmsp</id>
+            <name>Zobair Shahadat</name>
+        </developer>
+    </developers>
     <licenses>
         <license>
             <name>GNU LGPL 3</name>
@@ -21,7 +27,6 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-
     <dependencies>
         <dependency>
             <groupId>org.codehaus.sonar</groupId>

@@ -1,8 +1,8 @@
 # sonar-clojure plugins
 Uses eastwood and kibit to analyze clojure code
 ### Contributors
-######[Zobair Shahadat] (https://github.com/zmsp/)
-######[Javier Hilty] (https://github.com/hiltyj/)
+###### [Zobair Shahadat](https://github.com/zmsp/)
+###### [Javier Hilty](https://github.com/hiltyj/)
 
 ### Sample Output
 ![alt tag](https://raw.githubusercontent.com/zmsp/sonar-clojure/master/sample-output.png)
@@ -15,7 +15,7 @@ Uses eastwood and kibit to analyze clojure code
 volumes:
     - /opt/sonar/extensions:/opt/sonar/extensions
 ```
-* Need to install [sonar-runner] (http://docs.sonarqube.org/display/SONAR/Installing+and+Configuring+SonarQube+Runner) and configure sonar-runner.properties to make sonar server accessible (See [example](https://github.com/zmsp/sonar-clojure/tree/master/Resources))
+* Need to install [sonar-scanner] (https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) and configure sonar-runner.properties to make sonar server accessible (See [example](https://github.com/zmsp/sonar-clojure/tree/master/Resources))
 
 * Need to have [Eastwood](https://github.com/jonase/eastwood) and [Kibit](https://github.com/jonase/kibit) added to the profiles.clj (locaed on .lein/) file as plugins.
 
@@ -45,8 +45,8 @@ Run docker-compose up from your [docker-sonar image](https://github.com/harbur/d
 
 * Create a sonar-project.properties file
     * Add the line `sonar.import_unknown_files=true` see the [example](https://github.com/zmsp/sonar-clojure/tree/master/Resources)
-* [Run](http://docs.sonarqube.org/display/SONAR/Analyzing+Source+Code) sonar-runner. Make sure to have sonar server is running beforehand. 
-* Run sonar-runner
+* [Run](https://docs.sonarqube.org/display/SONAR/Analyzing+Source+Code) sonar-scanner. Make sure to have sonar server is running beforehand. 
+* Run `sonar-scanner` from project folder
 * Open Sonar `localhost:9000` on the browser 
 * Place Clojure widget to the dashboard
 * Optional: Place Size Metrics widget and resize the dashboard
