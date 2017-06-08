@@ -6,7 +6,7 @@
     <groupId>org.sonar.plugins.clojure</groupId>
     <artifactId>clojure.sonar</artifactId>
     <packaging>sonar-plugin</packaging>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
     <name>Sonar-Clojure-Plugin</name>
     <description>Scans clojure code using Kibit and Eastwood</description>
     <url>https://github.com/zmsp/sonar-clojure</url>
