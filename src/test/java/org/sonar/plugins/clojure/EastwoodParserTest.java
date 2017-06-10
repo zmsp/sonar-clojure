@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.junit.Assert.fail;
+
 
 public class EastwoodParserTest {
 
@@ -23,6 +25,15 @@ public class EastwoodParserTest {
 //        assertEquals(1, lines.size());
 //        assertTrue(lines.get(0).startsWith("test/reg/core"));
         testTwo();
+        testThree();
+
+    }
+
+    private void testThree() {
+        String kibitOutput = null;
+        if (null == kibitOutput || !"At".contains(kibitOutput)) {
+            return;
+        } else fail();
     }
 
     public void testTwo() throws Exception {

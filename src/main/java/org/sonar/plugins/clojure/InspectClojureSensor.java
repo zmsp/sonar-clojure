@@ -123,7 +123,7 @@ public class InspectClojureSensor implements Sensor {
         try {
 
             String kibitOutput = runCMD(baseDirectory, "lein kibit");
-            if (!kibitOutput.contains("At")) {
+            if (null == kibitOutput || !"At".contains(kibitOutput)) {
                 LOG.info("No error found from kibit analysis");
                 return;
             }

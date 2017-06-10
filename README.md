@@ -26,7 +26,7 @@ Wasn't tested on windows but plausible to run with little modification to source
 ### 1. Get the plugin
 
 #### Download the jar
-[Download](https://raw.githubusercontent.com/zmsp/sonar-clojure/master/Jar/clojure.sonar-1.0-SNAPSHOT.jar)
+[Download](https://github.com/zmsp/sonar-clojure/releases/)
 
 #### Compiling from Source
 * Clone this project
